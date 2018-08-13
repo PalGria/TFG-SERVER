@@ -1,14 +1,14 @@
 const dbConnection = require('../connection.js');
 const connection = dbConnection();
 let juegoCtrl = {};
-
+const utils = require('../utils.js');
 juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         res.json({
-            'status': 'Probando',
+            'status': 'Probando desde juego'
         });
     }
-    catch{
+    catch(err){
         console.log(err);
         res.json({
             'status': 'Error',
@@ -19,30 +19,36 @@ juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además
 
 juegoCtrl.addJuego = async (req, res) => {
     try {
-        //"nombre" : "nombreJuego",
-        //"imagen" : "imagen.jpg" (y añadir sistema de subida de imagen si sobra tiempo)
+        /*
+        Esta funcion agrega un juego a la lista de juegos 
+        FORMATO JSON
+        {
+        "nombre" : "nombreJuego",
+        "imagen" : "imagen.jpg" (y añadir sistema de subida de imagen si sobra tiempo)
+        }
+        */
         let nombre = req.body.nombre;
         let imagen = req.body.imagen;
-        let query = `INSERT INTO Juegos (Nombre, Imagen) VALUES (${req.body.nombre},${req.body.imagen}); `;
+        let query = `INSERT INTO Juegos (titulo, imagen) VALUES (${req.body.nombre},${req.body.imagen}); `;
         if(nombre){
-            let query = `INSERT INTO Juegos (Nombre, Imagen) VALUES (${req.body.nombre},${req.body.imagen}); `;
-            if(imagen){
-                query += ",imagen);"
+            let valores = [nombre];
+            let columnas = ['titulo'];
+            if (imagen){
+                valores.push(imagen);
+                columnas.push('imagen');
             }
-            else{
-                query += ");";
-            }
-            console.log(query);
+            let query = utils.createInsertQuery('Juegos', columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "funcando",
+                    "query": query,
                     "things": result,
                     "err": err
                 });
             });
         }
     }
-    catch{
+    catch(err){
         console.log(err);
         res.json({
             'status': 'Error',

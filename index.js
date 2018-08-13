@@ -26,6 +26,7 @@ app.use(cors({
 app.use(express.static(__dirname + '/static')); //Serves resources from static folder//Routes
 //Routes
 app.use('/api',require('./routes/prueba.routes.js'));
+app.use('/api',require('./routes/juegos.routes.js'));
 
 //Starting server
 app.listen(app.get('port'), () => {
