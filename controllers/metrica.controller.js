@@ -1,14 +1,14 @@
 const dbConnection = require('../connection.js');
 const connection = dbConnection();
-let juegoCtrl = {};
+let metricaCtrl = {};
 const utils = require('../utils.js');
-juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
+metricaCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         res.json({
-            'status': 'Probando desde juego'
+            'status': 'Probando desde metrica'
         });
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         res.json({
             'status': 'Error',
@@ -16,8 +16,7 @@ juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además
         });
     }
 }
-
-juegoCtrl.addJuego = async (req, res) => {
+metricaCtrl.addMetrica = async (req, res) => {
     try {
         /*
         Esta funcion agrega un juego a la lista de juegos 
@@ -28,15 +27,18 @@ juegoCtrl.addJuego = async (req, res) => {
         }
         */
         let nombre = req.body.nombre;
-        let imagen = req.body.imagen;
-        if(nombre){
-            let valores = [nombre];
-            let columnas = ['titulo'];
-            if (imagen){
-                valores.push(imagen);
-                columnas.push('imagen');
+        let tipo = req.body.tipo;
+        let juego = req.body.juego;
+        if (juego && nombre) {
+            let valores = [juego];
+            let columnas = ['juego'];
+            valores.push(nombre);
+            columnas.push('nombre');
+            if (tipo) {
+                valores.push(tipo);
+                columnas.push('tipo');
             }
-            let query = utils.createInsertQuery('Juegos', columnas, valores);
+            let query = utils.createInsertQuery('Metricas', columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "funcando",
@@ -46,21 +48,31 @@ juegoCtrl.addJuego = async (req, res) => {
                 });
             });
         }
+        else {
+            let err = 'Se necesitan los siguientes apartados para crear una métrica:';
+            if (!nombre) err += ' nombre';
+            if (!juego) err += ' juego'
+            res.json({
+                'status': 'Error',
+                "error": err
+            });
+        }
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         res.json({
             'status': 'Error',
             "error": err
         });
     }
+
 }
-juegoCtrl.getJuegos = async (req, res) =>{
+metricaCtrl.getMetricas = async (req, res) =>{
     try {
-        let query = `SELECT * FROM juegos;`
+        let query = `SELECT * FROM Metricas;`
         await connection.query(query, (err, result) => {
             res.json({
-                "status": "Juegos devueltos",
+                "status": "Metricas devueltos",
                 "query": query,
                 "result": result,
                 "err": err
@@ -75,7 +87,7 @@ juegoCtrl.getJuegos = async (req, res) =>{
         });
     }
 }
-juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+metricaCtrl.deleteMetrica = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
         if(isNaN(id)){
@@ -85,7 +97,7 @@ juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, ad
                 "id" : id
             });
         }
-        let query = `DELETE FROM juegos WHERE id_juego = ${id};`;
+        let query = `DELETE FROM metrica WHERE id_metrica = ${id};`;
         await connection.query(query, (err, result) => {
             res.json({
                 "status": "borrado(?)",
@@ -103,19 +115,19 @@ juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, ad
         });
     }
 }
-juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+metricaCtrl.editMetrica = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
         let nombre = req.body.nombre;
-        let imagen = req.body.imagen;
-        if(id && (nombre || imagen)){
+        let tipo = req.body.tipo;
+        if(id && (nombre || tipo)){
             let valores = [nombre];
             let columnas = ['titulo'];
-            if (imagen){
-                valores.push(imagen);
-                columnas.push('imagen');
+            if (tipo){
+                valores.push(tipo);
+                columnas.push('tipo');
             }
-            let query = utils.createEditQuery('Juegos', id, columnas, valores);
+            let query = utils.createEditQuery('Metricas', id, columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "funcando",
@@ -135,4 +147,5 @@ juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, adem
         });
     }
 }
-module.exports = juegoCtrl;
+
+module.exports = metricaCtrl;

@@ -5,7 +5,7 @@ const utils = require('../utils.js');
 juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         res.json({
-            'status': 'Probando desde juego'
+            'status': 'Probando desde valoresmatrica'
         });
     }
     catch(err){
@@ -17,24 +17,20 @@ juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además
     }
 }
 
-juegoCtrl.addJuego = async (req, res) => {
+juegoCtrl.addValores = async (req, res) => {
     try {
-        /*
-        Esta funcion agrega un juego a la lista de juegos 
-        FORMATO JSON
-        {
-        "nombre" : "nombreJuego",
-        "imagen" : "imagen.jpg" (y añadir sistema de subida de imagen si sobra tiempo)
-        }
-        */
         let nombre = req.body.nombre;
-        let imagen = req.body.imagen;
-        if(nombre){
+        let metrica = req.body.metrica;
+        let x = req.body.x;
+        let y = req.body.y;
+        let z = req.body.z;
+
+        if(metrica){
             let valores = [nombre];
             let columnas = ['titulo'];
-            if (imagen){
-                valores.push(imagen);
-                columnas.push('imagen');
+            if (metrica){
+                valores.push(metrica);
+                columnas.push('metrica');
             }
             let query = utils.createInsertQuery('Juegos', columnas, valores);
             await connection.query(query, (err, result) => {
