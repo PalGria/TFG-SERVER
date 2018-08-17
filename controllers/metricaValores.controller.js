@@ -25,14 +25,25 @@ juegoCtrl.addValores = async (req, res) => {
         let y = req.body.y;
         let z = req.body.z;
 
-        if(metrica){
-            let valores = [nombre];
-            let columnas = ['titulo'];
-            if (metrica){
-                valores.push(metrica);
-                columnas.push('metrica');
+        if(metrica && x){ //no meteremos valores si no tenemos un valor x o una metrica
+            let valores = [metrica];
+            let columnas = ['metrica'];
+            valores.push(x);
+            columnas.push('X');
+            if(y){
+                valores.push(y);
+                columnas.push('Y');    
             }
-            let query = utils.createInsertQuery('Juegos', columnas, valores);
+            if(z){
+                valores.push(z);
+                columnas.push('Z');    
+            }
+            if(nombre){
+                valores.push(nombre);
+                columnas.push('nombre');    
+            }
+
+            let query = utils.createInsertQuery('MetricaValores', columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "funcando",
@@ -51,12 +62,12 @@ juegoCtrl.addValores = async (req, res) => {
         });
     }
 }
-juegoCtrl.getJuegos = async (req, res) =>{
+juegoCtrl.getAllValores = async (req, res) =>{
     try {
-        let query = `SELECT * FROM juegos;`
+        let query = `SELECT * FROM MetricaValores;`
         await connection.query(query, (err, result) => {
             res.json({
-                "status": "Juegos devueltos",
+                "status": "MetricaValores devueltos",
                 "query": query,
                 "result": result,
                 "err": err
@@ -71,7 +82,7 @@ juegoCtrl.getJuegos = async (req, res) =>{
         });
     }
 }
-juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+juegoCtrl.deleteValores = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
         if(isNaN(id)){
@@ -81,7 +92,7 @@ juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, ad
                 "id" : id
             });
         }
-        let query = `DELETE FROM juegos WHERE id_juego = ${id};`;
+        let query = `DELETE FROM MetricaValores WHERE id_metrica_valores = ${id};`;
         await connection.query(query, (err, result) => {
             res.json({
                 "status": "borrado(?)",
@@ -99,36 +110,5 @@ juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, ad
         });
     }
 }
-juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
-    try {
-        const { id } = req.params;
-        let nombre = req.body.nombre;
-        let imagen = req.body.imagen;
-        if(id && (nombre || imagen)){
-            let valores = [nombre];
-            let columnas = ['titulo'];
-            if (imagen){
-                valores.push(imagen);
-                columnas.push('imagen');
-            }
-            let query = utils.createEditQuery('Juegos', id, columnas, valores);
-            await connection.query(query, (err, result) => {
-                res.json({
-                    "status": "funcando",
-                    "query": query,
-                    "result": result,
-                    "err": err
-                });
-            });
-        }
 
-    }
-    catch(err){
-        console.log(err);
-        res.json({
-            'status': 'Error',
-            "error": err
-        });
-    }
-}
 module.exports = juegoCtrl;

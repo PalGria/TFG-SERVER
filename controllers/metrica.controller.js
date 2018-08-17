@@ -87,6 +87,36 @@ metricaCtrl.getMetricas = async (req, res) =>{
         });
     }
 }
+metricaCtrl.getValoresMetrica = async (req, res) => {
+    try {
+        let metrica = req.params.metrica;
+        if (metrica) {
+            let query = `SELECT * FROM MetricaValores WHERE metrica = ${metrica};`
+            await connection.query(query, (err, result) => {
+                res.json({
+                    "status": "Valores de metrica devueltas",
+                    "query": query,
+                    "result": result,
+                    "err": err
+                });
+            });
+
+        }
+        else {
+            res.json({
+                'status': 'Error',
+                "error": 'Metrica no especificado'
+            });
+        }
+    }
+    catch (err) {
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
 metricaCtrl.deleteMetrica = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
