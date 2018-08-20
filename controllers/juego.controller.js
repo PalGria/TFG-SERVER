@@ -27,7 +27,8 @@ juegoCtrl.addJuego = async (req, res) => {
         "imagen" : "imagen.jpg" (y añadir sistema de subida de imagen si sobra tiempo)
         }
         */
-        let nombre = req.body.nombre;
+        console.log(req.body);
+        let nombre = req.body.titulo;
         let imagen = req.body.imagen;
         if (nombre) {
             let valores = [nombre];
@@ -37,6 +38,7 @@ juegoCtrl.addJuego = async (req, res) => {
                 columnas.push('imagen');
             }
             let query = utils.createInsertQuery('Juegos', columnas, valores);
+            console.log(query);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "funcando",
@@ -45,6 +47,12 @@ juegoCtrl.addJuego = async (req, res) => {
                     "err": err
                 });
             });
+        }
+        else{
+            res.json({
+                'status': 'Error',
+                "error": "Falta el nombre"
+            })
         }
     }
     catch (err) {
