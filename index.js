@@ -9,7 +9,7 @@ app.set('port', process.env.PORT || 3000);
 //Middlewares 
 app.use(morgan('dev'));
 app.use(express.json());
-var allowedOrigins = ['']; //poner aqui a donde se va a llamar
+var allowedOrigins = ['http://localhost:4200']; //poner aqui a donde se va a llamar
 app.use(cors({
   origin: function(origin, callback){
     // allow requests with no origin 

@@ -59,12 +59,14 @@ juegoCtrl.getJuegos = async (req, res) => {
     try {
         let query = `SELECT * FROM juegos;`
         await connection.query(query, (err, result) => {
-            res.json({
+            /*res.json({
                 "status": "Juegos devueltos",
                 "query": query,
                 "result": result,
                 "err": err
             });
+            */
+            res.json(result);
         });
     }
     catch (err) {
