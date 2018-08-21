@@ -91,12 +91,7 @@ juegoCtrl.getJuego = async (req, res) => {
         if (id) {
             let query = `SELECT * FROM juegos WHERE id_juego = ${id};`
             await connection.query(query, (err, result) => {
-                res.json({
-                    "status": "Juego devuelto",
-                    "query": query,
-                    "result": result,
-                    "err": err
-                });
+                res.json(result);
             });
         }
     }
