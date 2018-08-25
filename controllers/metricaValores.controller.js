@@ -19,6 +19,7 @@ juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además
 
 juegoCtrl.addValores = async (req, res) => {
     try {
+        console.log('hola');
         let nombre = req.body.nombre;
         let metrica = req.body.metrica;
         let x = req.body.x;
@@ -51,6 +52,12 @@ juegoCtrl.addValores = async (req, res) => {
                     "result": result,
                     "err": err
                 });
+            });
+        }
+        else{
+            res.json({
+                'status': 'Error',
+                "error": 'Falta la metrica o los valors'
             });
         }
     }

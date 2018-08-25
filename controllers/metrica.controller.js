@@ -71,13 +71,36 @@ metricaCtrl.getMetricas = async (req, res) =>{
     try {
         let query = `SELECT * FROM Metricas;`
         await connection.query(query, (err, result) => {
-            res.json({
-                "status": "Metricas devueltos",
-                "query": query,
-                "result": result,
-                "err": err
-            });
+            res.json(result);
         });
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
+metricaCtrl.getMetrica = async (req, res) =>{
+    try {
+        let id = req.params.id;
+        if(id){
+            let query = `SELECT * FROM Metricas WHERE id_metrica = ${id};`
+            await connection.query(query, (err, result) => {
+                res.json({
+                    "status": "Metricas devueltos",
+                    "query": query,
+                    "result": result,
+                    "err": err
+                });
+            });
+        }
+        else{
+        res.json({
+            'status': 'Error',
+            "error": '404 metrica no encontrada'
+        });        }
     }
     catch(err){
         console.log(err);
@@ -89,7 +112,7 @@ metricaCtrl.getMetricas = async (req, res) =>{
 }
 metricaCtrl.getValoresMetrica = async (req, res) => {
     try {
-        let metrica = req.params.metrica;
+        let metrica = req.params.id;
         if (metrica) {
             let query = `SELECT * FROM MetricaValores WHERE metrica = ${metrica};`
             await connection.query(query, (err, result) => {

@@ -28,6 +28,7 @@ app.use(express.static(__dirname + '/static')); //Serves resources from static f
 app.use('/api',require('./routes/prueba.routes.js'));
 app.use('/api',require('./routes/juegos.routes.js'));
 app.use('/api',require('./routes/metrica.routes.js'));
+app.use('/api',require('./routes/metricaValores.routes.js'));
 
 //Starting server
 app.listen(app.get('port'), () => {
