@@ -41,7 +41,7 @@ metricaCtrl.addMetrica = async (req, res) => {
             let query = utils.createInsertQuery('Metricas', columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
-                    "status": "funcando",
+                    "status": "Ok",
                     "query": query,
                     "result": result,
                     "err": err
@@ -183,7 +183,7 @@ metricaCtrl.editMetrica = async (req, res) => { //usaremos esto como plantilla, 
             let query = utils.createEditQuery('Metricas', id, columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
-                    "status": "funcando",
+                    "status": "Ok",
                     "query": query,
                     "result": result,
                     "err": err

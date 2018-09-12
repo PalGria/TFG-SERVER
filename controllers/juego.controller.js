@@ -41,7 +41,7 @@ juegoCtrl.addJuego = async (req, res) => {
             console.log(query);
             await connection.query(query, (err, result) => {
                 res.json({
-                    "status": "funcando",
+                    "status": "Ok",
                     "query": query,
                     "result": result,
                     "err": err
@@ -174,7 +174,7 @@ juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, adem
             let query = utils.createEditQuery('Juegos', id, columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
-                    "status": "funcando",
+                    "status": "Ok",
                     "query": query,
                     "result": result,
                     "err": err

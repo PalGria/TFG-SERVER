@@ -11,7 +11,7 @@ router.get(uri , (req, res) =>{
     console.log(db);
     connection.query(db, (err, result) => {
         res.json({
-            "status" : "funcando",
+            "status" : "Ok",
             "things" : result,
             "err" : err
         });

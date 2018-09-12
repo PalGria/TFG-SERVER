@@ -47,7 +47,7 @@ juegoCtrl.addValores = async (req, res) => {
             let query = utils.createInsertQuery('MetricaValores', columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
-                    "status": "funcando",
+                    "status": "Ok",
                     "query": query,
                     "result": result,
                     "err": err
