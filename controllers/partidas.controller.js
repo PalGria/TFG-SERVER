@@ -1,11 +1,11 @@
 const dbConnection = require('../connection.js');
 const connection = dbConnection();
-let juegoCtrl = {};
+let partidasCtrl = {};
 const utils = require('../utils.js');
-juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
+partidasCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         res.json({
-            'status': 'Probando desde juego'
+            'status': 'Probando desde partidas'
         });
     }
     catch (err) {
@@ -17,7 +17,7 @@ juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además
     }
 }
 
-juegoCtrl.addJuego = async (req, res) => {
+partidasCtrl.addPartida = async (req, res) => {
     try {
         /*
         Esta funcion agrega un juego a la lista de juegos 
@@ -63,7 +63,7 @@ juegoCtrl.addJuego = async (req, res) => {
         });
     }
 }
-juegoCtrl.getJuegos = async (req, res) => {
+partidasCtrl.getJuegos = async (req, res) => {
     try {
         let query = `SELECT * FROM juegos;`
         await connection.query(query, (err, result) => {
@@ -85,7 +85,7 @@ juegoCtrl.getJuegos = async (req, res) => {
         });
     }
 }
-juegoCtrl.getJuego = async (req, res) => {
+partidasCtrl.getJuego = async (req, res) => {
     try {
         let id = req.params.id;
         if (id) {
@@ -103,7 +103,7 @@ juegoCtrl.getJuego = async (req, res) => {
         });
     }
 }
-juegoCtrl.getMetricas = async (req, res) => {
+partidasCtrl.getMetricas = async (req, res) => {
     try {
         let juego = req.params.id;
         if (juego) {
@@ -133,7 +133,7 @@ juegoCtrl.getMetricas = async (req, res) => {
         });
     }
 }
-juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+partidasCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
         if (isNaN(id)) {
@@ -161,7 +161,7 @@ juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, ad
         });
     }
 }
-juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+partidasCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
         let nombre = req.body.titulo;
@@ -197,4 +197,4 @@ juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, adem
         });
     }
 }
-module.exports = juegoCtrl;
+module.exports = partidasCtrl;

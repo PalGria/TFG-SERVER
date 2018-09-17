@@ -1,8 +1,8 @@
 const dbConnection = require('../connection.js');
 const connection = dbConnection();
-let juegoCtrl = {};
+let metricaValoresCtrl = {};
 const utils = require('../utils.js');
-juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
+metricaValoresCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         res.json({
             'status': 'Probando desde valoresmatrica'
@@ -17,7 +17,7 @@ juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además
     }
 }
 
-juegoCtrl.addValores = async (req, res) => {
+metricaValoresCtrl.addValores = async (req, res) => {
     try {
         console.log('hola');
         let nombre = req.body.nombre;
@@ -69,7 +69,7 @@ juegoCtrl.addValores = async (req, res) => {
         });
     }
 }
-juegoCtrl.getAllValores = async (req, res) =>{
+metricaValoresCtrl.getAllValores = async (req, res) =>{
     try {
         let query = `SELECT * FROM MetricaValores;`
         await connection.query(query, (err, result) => {
@@ -89,7 +89,7 @@ juegoCtrl.getAllValores = async (req, res) =>{
         });
     }
 }
-juegoCtrl.deleteValores = async (req, res) => { //usaremos esto como plantilla, además de prueba
+metricaValoresCtrl.deleteValores = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
         if(isNaN(id)){
@@ -118,4 +118,4 @@ juegoCtrl.deleteValores = async (req, res) => { //usaremos esto como plantilla, 
     }
 }
 
-module.exports = juegoCtrl;
+module.exports = metricaValoresCtrl;

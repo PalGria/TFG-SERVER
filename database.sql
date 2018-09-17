@@ -45,6 +45,7 @@ CREATE TABLE RelacionMetricas(
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   met1 int NOT NULL,
   met2 int NOT NULL,
+  nombre VARCHAR(100),
   data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (met1) REFERENCES Metricas(id_metrica),
   FOREIGN KEY (met2) REFERENCES Metricas(id_metrica)
@@ -68,9 +69,6 @@ CREATE TABLE Usuarios(
 CREATE TABLE Partidas(
   id_partida INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   usuario INT,
-  X INT,
-  Y INT,
-  Z INT,
   data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (usuario) REFERENCES Usuarios(id_usuario)
 );

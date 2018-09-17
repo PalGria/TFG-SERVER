@@ -1,11 +1,11 @@
 const dbConnection = require('../connection.js');
 const connection = dbConnection();
-let juegoCtrl = {};
+let devCtrl = {};
 const utils = require('../utils.js');
-juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
+devCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         res.json({
-            'status': 'Probando desde juego'
+            'status': 'Probando desde dev'
         });
     }
     catch (err) {
@@ -17,18 +17,18 @@ juegoCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, además
     }
 }
 
-juegoCtrl.addJuego = async (req, res) => {
+devCtrl.addDesarrollador = async (req, res) => {
     try {
         /*
-        Esta funcion agrega un juego a la lista de juegos 
+        Esta funcion agrega un desarrollador a la lista de desarrolladors 
         FORMATO JSON
         {
-        "titulo" : "nombreJuego",
+        "nombre" : "nombreDev",
         "imagen" : "imagen.jpg" (y añadir sistema de subida de imagen si sobra tiempo)
         }
         */
         console.log(req.body);
-        let nombre = req.body.titulo;
+        let nombre = req.body.nombre;
         let imagen = req.body.imagen;
         if (nombre) {
             let valores = [nombre];
@@ -37,14 +37,13 @@ juegoCtrl.addJuego = async (req, res) => {
                 valores.push(imagen);
                 columnas.push('imagen');
             }
-            let query = utils.createInsertQuery('Juegos', columnas, valores);
+            let query = utils.createInsertQuery('Desarrolladores', columnas, valores);
             console.log(query);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "Ok",
                     "query": query,
-                    "result": result,
-                    "err": err
+                    "result": result
                 });
             });
         }
@@ -63,17 +62,10 @@ juegoCtrl.addJuego = async (req, res) => {
         });
     }
 }
-juegoCtrl.getJuegos = async (req, res) => {
+devCtrl.getDesarrolladores = async (req, res) => {
     try {
-        let query = `SELECT * FROM juegos;`
+        let query = `SELECT * FROM Desarrolladores;`
         await connection.query(query, (err, result) => {
-            /*res.json({
-                "status": "Juegos devueltos",
-                "query": query,
-                "result": result,
-                "err": err
-            });
-            */
             res.json(result);
         });
     }
@@ -85,11 +77,11 @@ juegoCtrl.getJuegos = async (req, res) => {
         });
     }
 }
-juegoCtrl.getJuego = async (req, res) => {
+devCtrl.getDesarrollador = async (req, res) => {
     try {
         let id = req.params.id;
         if (id) {
-            let query = `SELECT * FROM juegos WHERE id_juego = ${id};`
+            let query = `SELECT * FROM Desarrolladores WHERE id_dev = ${id};`
             await connection.query(query, (err, result) => {
                 res.json(result);
             });
@@ -103,37 +95,7 @@ juegoCtrl.getJuego = async (req, res) => {
         });
     }
 }
-juegoCtrl.getMetricas = async (req, res) => {
-    try {
-        let juego = req.params.id;
-        if (juego) {
-            let query = `SELECT * FROM Metricas WHERE juego = ${juego};`
-            await connection.query(query, (err, result) => {
-                res.json({
-                    "status": "Metricas de juego devueltas",
-                    "query": query,
-                    "result": result,
-                    "err": err
-                });
-            });
-
-        }
-        else {
-            res.json({
-                'status': 'Error',
-                "error": 'Juego no especificado'
-            });
-        }
-    }
-    catch (err) {
-        console.log(err);
-        res.json({
-            'status': 'Error',
-            "error": err
-        });
-    }
-}
-juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+devCtrl.deleteDesarrollador = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
         if (isNaN(id)) {
@@ -143,7 +105,7 @@ juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, ad
                 "id": id
             });
         }
-        let query = `DELETE FROM juegos WHERE id_juego = ${id};`;
+        let query = `DELETE FROM Desarrolladores WHERE id_dev = ${id};`;
         await connection.query(query, (err, result) => {
             res.json({
                 "status": "borrado(?)",
@@ -161,17 +123,17 @@ juegoCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, ad
         });
     }
 }
-juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+devCtrl.editDesarrollador = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
-        let nombre = req.body.titulo;
+        let nombre = req.body.nombre;
         let imagen = req.body.imagen;
         if (id && (nombre || imagen)) {
             let valores = [nombre];
-            let columnas = ['titulo'];
+            let columnas = ['nombre'];
             valores.push(imagen);
             columnas.push('imagen');
-            let query = utils.createEditQuery('Juegos', id, columnas, valores);
+            let query = utils.createEditQuery('Desarrolladores', id, columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "Ok",
@@ -197,4 +159,4 @@ juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, adem
         });
     }
 }
-module.exports = juegoCtrl;
+module.exports = devCtrl;
