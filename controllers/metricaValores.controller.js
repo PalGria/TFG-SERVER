@@ -71,6 +71,7 @@ metricaValoresCtrl.addValores = async (req, res) => {
 }
 metricaValoresCtrl.getAllValores = async (req, res) =>{
     try {
+        //TODO Cambiar aqui para que además de todo lo que hay en MetricaValores de el conjunto de variablesValores
         let query = `SELECT * FROM MetricaValores;`
         await connection.query(query, (err, result) => {
             res.json({
@@ -89,6 +90,9 @@ metricaValoresCtrl.getAllValores = async (req, res) =>{
         });
     }
 }
+
+
+
 metricaValoresCtrl.deleteValores = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;

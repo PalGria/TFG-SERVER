@@ -1,4 +1,4 @@
-const dbConnection = require('../connection.js');
+ const dbConnection = require('../connection.js');
 const connection = dbConnection();
 let relacionMetricas = {};
 const utils = require('../utils.js');
