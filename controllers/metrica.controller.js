@@ -114,7 +114,7 @@ metricaCtrl.getValoresMetrica = async (req, res) => {
     try {
         let metrica = req.params.id;
         if (metrica) {
-            let query = `SELECT * FROM MetricaValores WHERE metrica = ${metrica};`
+            let query = `SELECT * FROM Valores WHERE metrica = ${metrica};`
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "Valores de metrica devueltas",

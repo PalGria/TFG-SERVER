@@ -26,11 +26,9 @@ metricaValoresCtrl.addValores = async (req, res) => {
         let y = req.body.y;
         let z = req.body.z;
 
-        if(metrica && x){ //no meteremos valores si no tenemos un valor x o una metrica
-            let valores = [metrica];
-            let columnas = ['metrica'];
-            valores.push(x);
-            columnas.push('X');
+        if(x){ //no meteremos valores si no tenemos un valor x o una metrica
+            let valores = [x];
+            let columnas = ['X'];
             if(y){
                 valores.push(y);
                 columnas.push('Y');    
@@ -44,8 +42,12 @@ metricaValoresCtrl.addValores = async (req, res) => {
                 columnas.push('nombre');    
             }
 
-            let query = utils.createInsertQuery('MetricaValores', columnas, valores);
+            let query = utils.createInsertQuery('Valores', columnas, valores);
             await connection.query(query, (err, result) => {
+                if(metrica){
+                    let queryRel = utils.createInsertQuery('RelMetricaValores', ['metrica', 'valor'], [metrica, result.id_metrica_valores]);
+                    await connection.query (queryRel);
+                }
                 res.json({
                     "status": "Ok",
                     "query": query,
@@ -57,7 +59,7 @@ metricaValoresCtrl.addValores = async (req, res) => {
         else{
             res.json({
                 'status': 'Error',
-                "error": 'Falta la metrica o los valors'
+                "error": 'Faltan valors'
             });
         }
     }
@@ -72,7 +74,7 @@ metricaValoresCtrl.addValores = async (req, res) => {
 metricaValoresCtrl.getAllValores = async (req, res) =>{
     try {
         //TODO Cambiar aqui para que además de todo lo que hay en MetricaValores de el conjunto de variablesValores
-        let query = `SELECT * FROM MetricaValores;`
+        let query = `SELECT * FROM Valores;`
         await connection.query(query, (err, result) => {
             res.json({
                 "status": "MetricaValores devueltos",
@@ -103,7 +105,7 @@ metricaValoresCtrl.deleteValores = async (req, res) => { //usaremos esto como pl
                 "id" : id
             });
         }
-        let query = `DELETE FROM MetricaValores WHERE id_metrica_valores = ${id};`;
+        let query = `DELETE FROM Valores WHERE id_metrica_valores = ${id};`;
         await connection.query(query, (err, result) => {
             res.json({
                 "status": "borrado(?)",

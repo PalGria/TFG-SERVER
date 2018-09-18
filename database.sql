@@ -1,9 +1,10 @@
 drop table if exists RelacionMetricas;
-drop table if exists MetricaValores;
+drop table if exists RelMetricaValores;
+drop table if exists VariablesValores CASCADE;
+drop table if exists Valores;
 drop table if exists Metricas;
-drop table if exists Juegos CASCADE;
-drop table if exists RelacionMetricas CASCADE;
 drop table if exists Partidas CASCADE;
+drop table if exists Juegos CASCADE;
 drop table if exists Usuarios CASCADE;
 drop table if exists Desarrolladores CASCADE;
 
@@ -29,18 +30,25 @@ CREATE TABLE Metricas (
   data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (juego) REFERENCES Juegos(id_juego)
 );
-CREATE TABLE MetricaValores(
+CREATE TABLE Valores(
   id_metrica_valores INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100),
   color VARCHAR(10),
-  nombre VARCHAR (100),
-  metrica INT, 
   X INT,
   Y INT,
   Z INT,
-  data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (metrica) REFERENCES metricas(id_metrica)
+  data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE RelMetricaValores(
+  id_relacion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  color VARCHAR(10),
+  nombre VARCHAR (100),
+  metrica int, 
+  valor int, 
+  FOREIGN KEY (metrica) REFERENCES metricas(id_metrica),
+  FOREIGN KEY (valor) REFERENCES valores(id_metrica_valores)
+
+  );
 CREATE TABLE RelacionMetricas(
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   met1 int NOT NULL,
@@ -49,17 +57,6 @@ CREATE TABLE RelacionMetricas(
   data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (met1) REFERENCES Metricas(id_metrica),
   FOREIGN KEY (met2) REFERENCES Metricas(id_metrica)
-);
-CREATE TABLE VariablesValores(
-  id_var INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  metricaValor INT,
-  partida INT, 
-  X INT,
-  Y INT,
-  Z INT,
-  data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (metricaValor) REFERENCES MetricaValores(id_metrica_valores),
-  FOREIGN KEY (partida) REFERENCES Partidas(id_partida)
 );
 CREATE TABLE Usuarios(
   id_usuario INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -72,3 +69,15 @@ CREATE TABLE Partidas(
   data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (usuario) REFERENCES Usuarios(id_usuario)
 );
+CREATE TABLE VariablesValores(
+  id_var INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  metricaValor INT,
+  partida INT, 
+  X INT,
+  Y INT,
+  Z INT,
+  data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (metricaValor) REFERENCES Valores(id_metrica_valores),
+  FOREIGN KEY (partida) REFERENCES Partidas(id_partida)
+);
+
