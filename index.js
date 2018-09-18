@@ -29,6 +29,10 @@ app.use('/api',require('./routes/prueba.routes.js'));
 app.use('/api',require('./routes/juegos.routes.js'));
 app.use('/api',require('./routes/metrica.routes.js'));
 app.use('/api',require('./routes/metricaValores.routes.js'));
+app.use('/api',require('./routes/partidas.routes.js'));
+app.use('/api',require('./routes/relacionesMetricas.routes.js'));
+app.use('/api',require('./routes/usuario.routes.js'));
+app.use('/api',require('./routes/variablesValores.routes.js'));
 
 //Starting server
 app.listen(app.get('port'), () => {
