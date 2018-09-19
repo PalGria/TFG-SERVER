@@ -18,7 +18,7 @@ utils.createInsertQuery = (tabla, columnas, valores) => {
     console.log(query);
     return query;
 }
-utils.createEditQuery = (tabla, id, columnas, valores) => {
+utils.createEditQuery = (tabla, id, nombre_id, columnas, valores) => {
     //esta funcion creara una query con el siguiente formato dados los valores
     //Update nombre_tabla Set columnas[i] = valores[i], columnas[i+1] = valores[i+1]
     //WHERE id = id
@@ -31,7 +31,7 @@ utils.createEditQuery = (tabla, id, columnas, valores) => {
             }
         }
     }
-    query += `WHERE id_juego = '${id}'`;
+    query += `WHERE ${nombre_id} = '${id}'`;
     console.log(query);
     return query;
 }

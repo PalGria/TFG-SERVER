@@ -118,7 +118,7 @@ usuarioCtrl.editUsuario = async (req, res) => { //usaremos esto como plantilla, 
         if (id && alias) {
             let valores = [alias];
             let columnas = ['alias'];
-            let query = utils.createEditQuery('Usuarios', id, columnas, valores);
+            let query = utils.createEditQuery('Usuarios', id, 'id_usuario', columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "Ok",

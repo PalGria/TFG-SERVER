@@ -171,7 +171,7 @@ juegoCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, adem
             let columnas = ['titulo'];
             valores.push(imagen);
             columnas.push('imagen');
-            let query = utils.createEditQuery('Juegos', id, columnas, valores);
+            let query = utils.createEditQuery('Juegos', id, 'id_juego' , columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "Ok",

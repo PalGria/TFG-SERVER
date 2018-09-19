@@ -192,12 +192,12 @@ metricaCtrl.editMetrica = async (req, res) => { //usaremos esto como plantilla, 
         let tipo = req.body.tipo;
         if(id && (nombre || tipo)){
             let valores = [nombre];
-            let columnas = ['titulo'];
+            let columnas = ['nombre'];
             if (tipo){
                 valores.push(tipo);
                 columnas.push('tipo');
             }
-            let query = utils.createEditQuery('Metricas', id, columnas, valores);
+            let query = utils.createEditQuery('Metricas', id, 'id_metrica' , columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "Ok",

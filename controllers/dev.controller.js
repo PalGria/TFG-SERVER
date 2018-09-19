@@ -133,7 +133,7 @@ devCtrl.editDesarrollador = async (req, res) => { //usaremos esto como plantilla
             let columnas = ['nombre'];
             valores.push(imagen);
             columnas.push('imagen');
-            let query = utils.createEditQuery('Desarrolladores', id, columnas, valores);
+            let query = utils.createEditQuery('Desarrolladores', id, 'id_dev', columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
                     "status": "Ok",
