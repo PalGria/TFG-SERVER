@@ -21,7 +21,6 @@ metricaValoresCtrl.addValores = async (req, res) => {
     try {
         console.log('hola');
         let nombre = req.body.nombre;
-        let metrica = req.body.metrica;
         let x = req.body.x;
         let y = req.body.y;
         let z = req.body.z;
@@ -44,10 +43,6 @@ metricaValoresCtrl.addValores = async (req, res) => {
 
             let query = utils.createInsertQuery('Valores', columnas, valores);
             await connection.query(query, (err, result) => {
-                if(metrica){
-                    let queryRel = utils.createInsertQuery('RelMetricaValores', ['metrica', 'valor'], [metrica, result.id_metrica_valores]);
-                    await connection.query (queryRel);
-                }
                 res.json({
                     "status": "Ok",
                     "query": query,

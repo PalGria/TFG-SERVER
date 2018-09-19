@@ -167,7 +167,7 @@ metricaCtrl.deleteMetrica = async (req, res) => { //usaremos esto como plantilla
                 "id" : id
             });
         }
-        let query = `DELETE FROM metrica WHERE id_metrica = ${id};`;
+        let query = `DELETE FROM metricas WHERE id_metrica = ${id};`;
         await connection.query(query, (err, result) => {
             res.json({
                 "status": "borrado(?)",

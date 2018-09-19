@@ -73,11 +73,11 @@ partidasCtrl.getJuegos = async (req, res) => {
         });
     }
 }
-partidasCtrl.getJuego = async (req, res) => {
+partidasCtrl.getPartidas = async (req, res) => {
     try {
         let id = req.params.id;
         if (id) {
-            let query = `SELECT * FROM juegos WHERE id_juego = ${id};`
+            let query = `SELECT * FROM partidas;`
             await connection.query(query, (err, result) => {
                 res.json(result);
             });
@@ -91,25 +91,13 @@ partidasCtrl.getJuego = async (req, res) => {
         });
     }
 }
-partidasCtrl.getMetricas = async (req, res) => {
+partidasCtrl.getPartida = async (req, res) => {
     try {
-        let juego = req.params.id;
-        if (juego) {
-            let query = `SELECT * FROM Metricas WHERE juego = ${juego};`
+        let id = req.params.id;
+        if (id) {
+            let query = `SELECT * FROM partidas WHERE id_juego = ${id};`
             await connection.query(query, (err, result) => {
-                res.json({
-                    "status": "Metricas de juego devueltas",
-                    "query": query,
-                    "result": result,
-                    "err": err
-                });
-            });
-
-        }
-        else {
-            res.json({
-                'status': 'Error',
-                "error": 'Juego no especificado'
+                res.json(result);
             });
         }
     }
@@ -121,7 +109,7 @@ partidasCtrl.getMetricas = async (req, res) => {
         });
     }
 }
-partidasCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+partidasCtrl.deletePartida = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         const { id } = req.params;
         if (isNaN(id)) {
@@ -131,7 +119,7 @@ partidasCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla,
                 "id": id
             });
         }
-        let query = `DELETE FROM juegos WHERE id_juego = ${id};`;
+        let query = `DELETE FROM partidas WHERE id_partida = ${id};`;
         await connection.query(query, (err, result) => {
             res.json({
                 "status": "borrado(?)",
@@ -149,40 +137,5 @@ partidasCtrl.deleteJuego = async (req, res) => { //usaremos esto como plantilla,
         });
     }
 }
-partidasCtrl.editJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
-    try {
-        const { id } = req.params;
-        let nombre = req.body.titulo;
-        let imagen = req.body.imagen;
-        if (id && (nombre || imagen)) {
-            let valores = [nombre];
-            let columnas = ['titulo'];
-            valores.push(imagen);
-            columnas.push('imagen');
-            let query = utils.createEditQuery('Juegos', id, columnas, valores);
-            await connection.query(query, (err, result) => {
-                res.json({
-                    "status": "Ok",
-                    "query": query,
-                    "result": result,
-                    "err": err
-                });
-            });
-        }
-        else {
-            res.json({
-                "status": "Error",
-                "err": "Falta nombre o id",
-            });
-        }
 
-    }
-    catch (err) {
-        console.log(err);
-        res.json({
-            'status': 'Error',
-            "error": err
-        });
-    }
-}
 module.exports = partidasCtrl;
