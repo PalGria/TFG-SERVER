@@ -25,9 +25,10 @@ metricaValoresCtrl.addValores = async (req, res) => {
         let y = req.body.y;
         let z = req.body.z;
 
-        if(x){ //no meteremos valores si no tenemos un valor x o una metrica
-            let valores = [x];
-            let columnas = ['X'];
+        if(nombre){ //no meteremos valores si no tenemos un valor x o una metrica
+            let valores = [nombre];
+            let columnas = ['Nombre'];
+
             if(y){
                 valores.push(y);
                 columnas.push('Y');    
@@ -36,9 +37,9 @@ metricaValoresCtrl.addValores = async (req, res) => {
                 valores.push(z);
                 columnas.push('Z');    
             }
-            if(nombre){
-                valores.push(nombre);
-                columnas.push('nombre');    
+            if(x){
+                valores.push(x);
+                columnas.push('X');    
             }
 
             let query = utils.createInsertQuery('Valores', columnas, valores);
@@ -54,7 +55,7 @@ metricaValoresCtrl.addValores = async (req, res) => {
         else{
             res.json({
                 'status': 'Error',
-                "error": 'Faltan valors'
+                "error": 'Falta nombre'
             });
         }
     }
@@ -71,12 +72,7 @@ metricaValoresCtrl.getAllValores = async (req, res) =>{
         //TODO Cambiar aqui para que además de todo lo que hay en MetricaValores de el conjunto de variablesValores
         let query = `SELECT * FROM Valores;`
         await connection.query(query, (err, result) => {
-            res.json({
-                "status": "MetricaValores devueltos",
-                "query": query,
-                "result": result,
-                "err": err
-            });
+            res.json(result);
         });
     }
     catch(err){
