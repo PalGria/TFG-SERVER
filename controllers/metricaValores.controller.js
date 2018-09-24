@@ -83,6 +83,34 @@ metricaValoresCtrl.getAllValores = async (req, res) =>{
         });
     }
 }
+metricaValoresCtrl.editValores = async (req, res) => { //usaremos esto como plantilla, además de prueba
+    try {
+        const { id } = req.params;
+        let nombre = req.body.nombre;
+        if(id && nombre){
+            let valores = [nombre];
+            let columnas = ['nombre'];
+
+            let query = utils.createEditQuery('Valores', id, 'id_metrica_valores' , columnas, valores);
+            await connection.query(query, (err, result) => {
+                res.json({
+                    "status": "Ok",
+                    "query": query,
+                    "result": result,
+                    "err": err
+                });
+            });
+        }
+
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
 
 
 
