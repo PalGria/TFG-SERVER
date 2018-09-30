@@ -34,10 +34,13 @@ CREATE TABLE Valores(
   id_metrica_valores INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100),
   color VARCHAR(10),
+  juego int,
   X INT,
   Y INT,
   Z INT,
-  data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (juego) REFERENCES Juegos(id_juego)
+
 );
 CREATE TABLE RelMetricaValores(
   id_relacion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,

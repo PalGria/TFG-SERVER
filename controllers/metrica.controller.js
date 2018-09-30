@@ -18,12 +18,42 @@ metricaCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, ademÃ
 }
 metricaCtrl.addValoresMetrica = async (req, res) => { //usaremos esto como plantilla, ademÃ¡s de prueba
     try {
-        let metrica = req.body.metrica;
+        let metrica = req.params.id;
         let valor = req.body.valor;
         let query = utils.createInsertQuery('RelMetricaValores', ['metrica', 'valor'], [metrica, valor]);
         res.json({
             'status': 'Probando desde metrica'
         });
+    }
+    catch (err) {
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
+metricaCtrl.getValoresMetrica = async (req, res) => {
+    try {
+        let metrica = req.params.id;
+        if (metrica) {
+            let query = `SELECT * FROM Valores WHERE metrica = ${metrica};`
+            await connection.query(query, (err, result) => {
+                res.json({
+                    "status": "Valores de metrica devueltas",
+                    "query": query,
+                    "result": result,
+                    "err": err
+                });
+            });
+
+        }
+        else {
+            res.json({
+                'status': 'Error',
+                "error": 'Metrica no especificado'
+            });
+        }
     }
     catch (err) {
         console.log(err);

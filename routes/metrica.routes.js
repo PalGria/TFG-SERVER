@@ -5,6 +5,7 @@ const metrica = require('../controllers/metrica.controller');
 const apiURL = "/metricas/";
 router.get(apiURL + 'prueba', metrica.prueba);
 router.get(apiURL + ':id/valores', metrica.getValoresMetrica);
+router.post(apiURL + ':id/valores', metrica.addValoresMetrica);
 router.get(apiURL, metrica.getMetricas);
 router.get(apiURL + ':id', metrica.getMetrica)
 router.post(apiURL , metrica.addMetrica);

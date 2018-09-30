@@ -16,7 +16,23 @@ metricaValoresCtrl.prueba = async (req, res) => { //usaremos esto como plantilla
         });
     }
 }
-
+metricaValoresCtrl.getValoresPorJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+    try {
+        //TODO Cambiar aqui para que además de todo lo que hay en MetricaValores de el conjunto de variablesValores
+        const juego = req.body,juego;          
+        let query = `SELECT * FROM Valores WHERE juego = ${juego};`
+        await connection.query(query, (err, result) => {
+            res.json(result);
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
 metricaValoresCtrl.addValores = async (req, res) => {
     try {
         console.log('hola');
@@ -41,7 +57,10 @@ metricaValoresCtrl.addValores = async (req, res) => {
                 valores.push(x);
                 columnas.push('X');    
             }
-
+            if(juego){
+                valores.push(juego);
+                columnas.push('juego');
+            }
             let query = utils.createInsertQuery('Valores', columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
@@ -87,10 +106,14 @@ metricaValoresCtrl.editValores = async (req, res) => { //usaremos esto como plan
     try {
         const { id } = req.params;
         let nombre = req.body.nombre;
+        let juego = req.body.juego;
         if(id && nombre){
             let valores = [nombre];
             let columnas = ['nombre'];
-
+            if(juego){
+                valores.push(juego);
+                columnas.push('juego');
+            }
             let query = utils.createEditQuery('Valores', id, 'id_metrica_valores' , columnas, valores);
             await connection.query(query, (err, result) => {
                 res.json({
@@ -111,7 +134,6 @@ metricaValoresCtrl.editValores = async (req, res) => { //usaremos esto como plan
         });
     }
 }
-
 
 
 metricaValoresCtrl.deleteValores = async (req, res) => { //usaremos esto como plantilla, además de prueba
