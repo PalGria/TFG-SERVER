@@ -19,7 +19,7 @@ metricaValoresCtrl.prueba = async (req, res) => { //usaremos esto como plantilla
 metricaValoresCtrl.getValoresPorJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         //TODO Cambiar aqui para que además de todo lo que hay en MetricaValores de el conjunto de variablesValores
-        const juego = req.body,juego;          
+        const juego = req.body.juego;          
         let query = `SELECT * FROM Valores WHERE juego = ${juego};`
         await connection.query(query, (err, result) => {
             res.json(result);
@@ -32,6 +32,52 @@ metricaValoresCtrl.getValoresPorJuego = async (req, res) => { //usaremos esto co
             "error": err
         });
     }
+}
+metricaValoresCtrl.getValoresPorMetrica = async (req, res) => { 
+    try{
+        const metrica = req.body.metrica;          
+        let query = `SELECT * FROM metricaValores WHERE metrica = ${metrica} LEFT JOIN Valores ON metricaValores.valor = Valores.id_metrica_valores;`
+        await connection.query(query, (err, result) => {
+            res.json(result);
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+
+metricaValoresCtrl.addValoresToMetrica = async (req, res) => { 
+    try{
+        const metrica = req.body.metrica;
+        const valor = req.body.valor;          
+        if(metrica && valor){
+
+            let query = utils.createInsertQuery('RelMetricaValores', ['metrica', 'valor'], [metrica, valor]);
+            await connection.query(query, (err, result) => {
+                res.json({
+                    "status": "Ok",
+                    "query": query,
+                    "result": result,
+                    "err": err
+                });
+            });
+        }
+        await connection.query(query, (err, result) => {
+            res.json(result);
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+
+}
 }
 metricaValoresCtrl.addValores = async (req, res) => {
     try {
