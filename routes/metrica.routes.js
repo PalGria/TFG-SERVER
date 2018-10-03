@@ -6,6 +6,8 @@ const apiURL = "/metricas/";
 router.get(apiURL + 'prueba', metrica.prueba);
 router.get(apiURL + ':id/valores', metrica.getValoresMetrica);
 router.post(apiURL + ':id/valores', metrica.addValoresMetrica);
+router.delete(apiURL + 'valores/:id' , metrica.deleteValoresFromMetricas);
+router.put(apiURL + ':id/valores' , metrica.editValoresFromMetricas);
 router.get(apiURL, metrica.getMetricas);
 router.get(apiURL + ':id', metrica.getMetrica)
 router.post(apiURL , metrica.addMetrica);

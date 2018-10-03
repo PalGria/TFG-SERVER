@@ -50,6 +50,65 @@ metricaCtrl.addValoresMetrica = async (req, res) => { //usaremos esto como plant
         });
     }
 }
+metricaCtrl.deleteValoresFromMetricas = async (req, res) => { //usaremos esto como plantilla, además de prueba
+    console.log("deleteValoresFromMetricas");
+    try{
+        const id= req.params.id;
+        console.log(req.body);       
+        if(id){
+
+            let query =`DELETE FROM RelMetricaValores WHERE id_relacion = ${id};` ;
+            await connection.query(query, (err, result) => {
+                res.json({
+                    "status": "Ok",
+                    "query": query,
+                    "result": result,
+                    "err": err
+                });
+            });
+        }
+
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
+metricaCtrl.editValoresFromMetricas = async (req, res) => { 
+    try{
+        const id = req.params.id;
+        const color = req.body.color
+        if(id && color){
+
+            let query = utils.createEditQuery('RelMetricaValores', id, 'id_relacion', ['color_rel'], [color]);
+            await connection.query(query, (err, result) => {
+                res.json({
+                    "status": "Ok",
+                    "query": query,
+                    "result": result,
+                    "err": err
+                });
+            });
+        }
+        else{
+           res.json({
+                'status': 'Error',
+                "error": "Falta id o color"
+            });
+        }
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+
+}
 metricaCtrl.getValoresMetrica = async (req, res) => {
     try {
         let metrica = req.params.id;

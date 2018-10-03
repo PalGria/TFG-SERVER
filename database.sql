@@ -25,7 +25,7 @@ CREATE TABLE Juegos (
 CREATE TABLE Metricas (
   id_metrica INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100),
-  tipo ENUM('bar-vertical','bar-horizontal', 'bar-multiaxis','line-basic', 'radar', 'pie','doghnut'),
+  tipo ENUM('horizontalBar','bar','line', 'radar', 'pie','doghnut'),
   juego INT,
   data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (juego) REFERENCES Juegos(id_juego)
@@ -39,13 +39,14 @@ CREATE TABLE Valores(
   Y INT,
   Z INT,
   data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  tipo ENUM('sum','avg'),
   FOREIGN KEY (juego) REFERENCES Juegos(id_juego)
 
 );
 CREATE TABLE RelMetricaValores(
   id_relacion INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  color VARCHAR(10),
-  nombre VARCHAR (100),
+  color_rel VARCHAR(10),
+  nombre_rel VARCHAR (100),
   metrica int, 
   valor int, 
   FOREIGN KEY (metrica) REFERENCES metricas(id_metrica),

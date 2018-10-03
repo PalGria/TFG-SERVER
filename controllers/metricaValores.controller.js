@@ -48,7 +48,7 @@ metricaValoresCtrl.getValoresPorMetrica = async (req, res) => {
             "error": err
         });
     }
-
+}
 metricaValoresCtrl.addValoresToMetrica = async (req, res) => { 
     try{
         const metrica = req.body.metrica;
@@ -78,6 +78,38 @@ metricaValoresCtrl.addValoresToMetrica = async (req, res) => {
     }
 
 }
+
+metricaValoresCtrl.deleteValoresFromMetricas = async (req, res) => { //usaremos esto como plantilla, además de prueba
+    try{
+        const metrica = req.body.metrica;
+        const valor = req.body.valor;          
+        if(metrica && valor){
+
+            let query = `DELETE FROM RelMetricaValores WHERE metrica = ${metrica} AND  valor = ${valor};`;
+            await connection.query(query, (err, result) => {
+                res.json({
+                    "status": "Ok",
+                    "query": query,
+                    "result": result,
+                    "err": err
+                });
+            });
+        }
+        else{
+        res.json({
+            'status': 'Error',
+            "error": 'Falta o metrica o valor',
+            "metrica" : metrica, 
+            "valor" : valor
+        });        }
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
 }
 metricaValoresCtrl.addValores = async (req, res) => {
     try {
@@ -86,6 +118,8 @@ metricaValoresCtrl.addValores = async (req, res) => {
         let x = req.body.x;
         let y = req.body.y;
         let z = req.body.z;
+        let juego = req.body.juego; 
+        let tipo = req.body.tipo; 
 
         if(nombre){ //no meteremos valores si no tenemos un valor x o una metrica
             let valores = [nombre];
@@ -106,6 +140,14 @@ metricaValoresCtrl.addValores = async (req, res) => {
             if(juego){
                 valores.push(juego);
                 columnas.push('juego');
+            }
+            if(tipo){
+                valores.push(tipo);
+                columnas.push('tipo');
+            }
+            else{
+                valores.push('sum');
+                columnas.push('tipo');
             }
             let query = utils.createInsertQuery('Valores', columnas, valores);
             await connection.query(query, (err, result) => {
@@ -153,12 +195,23 @@ metricaValoresCtrl.editValores = async (req, res) => { //usaremos esto como plan
         const { id } = req.params;
         let nombre = req.body.nombre;
         let juego = req.body.juego;
+        let tipo = req.body.tipo;
+        let color = req.body.color;
+
         if(id && nombre){
             let valores = [nombre];
             let columnas = ['nombre'];
             if(juego){
                 valores.push(juego);
                 columnas.push('juego');
+            }
+            if(tipo){
+                valores.push(tipo);
+                columnas.push('tipo');
+            }
+            if(color){
+                valores.push(color);
+                columnas.push('color');
             }
             let query = utils.createEditQuery('Valores', id, 'id_metrica_valores' , columnas, valores);
             await connection.query(query, (err, result) => {

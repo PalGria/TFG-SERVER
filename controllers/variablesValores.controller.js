@@ -16,7 +16,41 @@ variablesValores.prueba = async (req, res) => { //usaremos esto como plantilla, 
         });
     }
 }
+variablesValores.getVariablesValores = async (req, res) => { //usaremos esto como plantilla, además de prueba
+    try {
+        let query = `SELECT * FROM VariablesValores;`
+        await connection.query(query, async (err, result) => {
+            res.json(result);
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
+variablesValores.updateValores = async (valor) => {
+    try {
+        let query = `
+        UPDATE Valores SET X = (
+        SELECT SUM(X) FROM VariablesValores WHERE metricaValor = ${valor})
+        WHERE id_metrica_valores = ${valor}`;
+        await connection.query(query, async (err, result) => {
+            console.log(query);
+            console.log(result);
+        });
 
+    }
+    catch (err) {
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
 variablesValores.addVarValores = async (req, res) => {
     try {
         /*
@@ -36,8 +70,10 @@ variablesValores.addVarValores = async (req, res) => {
         let X = req.body.X;
         let Y = req.body.Y;
         let Z = req.body.Z;
+        console.log("ay");
 
-        if (metricaValor && !X.isNaN) {
+        if (metricaValor && X && !X.isNaN) {
+            console.log("ay");
             //si no hay o metrica o valor no meto nada
             let valores = [metricaValor];
             let columnas = ['metricaValor'];
@@ -47,18 +83,19 @@ variablesValores.addVarValores = async (req, res) => {
                 valores.push(partida);
                 columnas.push('partida');
             }
-            if (!Y.isNaN) {
+            if (Y && !Y.isNaN) {
                 valores.push(Y);
                 columnas.push('Y');
             }
-            if (!Z.isNaN) {
+            if (Z && !Z.isNaN) {
                 valores.push(Z);
                 columnas.push('Z');
             }
 
             let query = utils.createInsertQuery('VariablesValores', columnas, valores);
             console.log(query);
-            await connection.query(query, (err, result) => {
+            await connection.query(query, async (err, result) => {
+                await variablesValores.updateValores(metricaValor);
                 res.json({
                     "status": "Ok",
                     "query": query,
@@ -70,7 +107,9 @@ variablesValores.addVarValores = async (req, res) => {
         else{
             res.json({
                 'status': 'Error',
-                "error": "Falta el nombre"
+                "error": "Falta el nombre",
+                "query": query
+
             })
         }
     }
