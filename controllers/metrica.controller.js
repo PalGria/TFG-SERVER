@@ -16,6 +16,31 @@ metricaCtrl.prueba = async (req, res) => { //usaremos esto como plantilla, adem�
         });
     }
 }
+metricaCtrl.getMetricasFromJuego = async (req, res) => { //usaremos esto como plantilla, además de prueba
+    try {
+        let juego = req.params.id;
+        if(juego && !isNaN(juego)){
+            let query = `SELECT * FROM Metricas WHERE juego = ${juego};`
+            await connection.query(query, (err, result) => {
+                res.json(result);
+            });
+        } 
+        else{
+            res.json({
+                'status': 'Error',
+                "error": 'Ha habido un error. '
+            });
+        }
+    }
+    catch (err) {
+        console.log(err);
+        res.json({
+            'status': 'Error',
+            "error": err
+        });
+    }
+}
+
 metricaCtrl.addValoresMetrica = async (req, res) => { //usaremos esto como plantilla, además de prueba
     try {
         let metrica = req.params.id;

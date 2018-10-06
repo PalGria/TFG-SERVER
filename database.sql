@@ -25,7 +25,7 @@ CREATE TABLE Juegos (
 CREATE TABLE Metricas (
   id_metrica INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100),
-  tipo ENUM('horizontalBar','bar','line', 'radar', 'pie','doghnut'),
+  tipo VARCHAR(15),
   juego INT,
   data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (juego) REFERENCES Juegos(id_juego)
